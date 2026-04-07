@@ -1,4 +1,4 @@
-name: Build for Windows (JVM)
+name: Build Windows EXE
 
 on:
   workflow_dispatch: 
@@ -10,29 +10,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 21  # Nâng cấp từ 17 lên 21
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21' # Đây là dòng quan trọng nhất
+          java-version: '21'
           distribution: 'zulu'
           cache: 'gradle'
 
-      - name: Grant execute permission for gradlew
-        run: git update-index --chmod=+x gradlew
+      - name: Build EXE Package
+        # Task này của KorGE sẽ đóng gói ứng dụng kèm theo JRE thu nhỏ
+        run: ./gradlew packageJvmApp --no-daemon
 
-      - name: Build with Gradle
-        # Sử dụng task packageJvmApp thay vì installDist
-        run: ./gradlew jvmJar --stacktrace
-
-      - name: Upload Artifact
+      - name: Upload EXE Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: game2048-jvm-jar
-          # Đường dẫn file jar thường nằm ở đây sau khi build
-          path: build/libs/*.jar
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: game2048-windows-jvm
-          path: build/install/game2048/
+          name: game2048-windows-package
+          # Thư mục chứa file exe và các file phụ trợ
+          path: build/jpackage/
