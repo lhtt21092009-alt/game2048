@@ -21,7 +21,15 @@ jobs:
         run: git update-index --chmod=+x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew installDist
+        # Sử dụng task packageJvmApp thay vì installDist
+        run: ./gradlew jvmJar --stacktrace
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: game2048-jvm-jar
+          # Đường dẫn file jar thường nằm ở đây sau khi build
+          path: build/libs/*.jar
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
