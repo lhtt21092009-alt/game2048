@@ -1,19 +1,19 @@
 name: Build for Windows (JVM)
 
 on:
-  workflow_dispatch: # Cho phép bấm nút chạy thủ công
+  workflow_dispatch: 
 
 jobs:
   build:
-    runs-on: windows-latest # Chạy trên máy chủ Windows của GitHub
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21  # Nâng cấp từ 17 lên 21
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21' # Đây là dòng quan trọng nhất
           distribution: 'zulu'
           cache: 'gradle'
 
