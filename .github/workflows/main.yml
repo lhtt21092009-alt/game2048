@@ -1,4 +1,4 @@
-name: Build Windows EXE
+name: Build Windows App
 
 on:
   workflow_dispatch: 
@@ -17,13 +17,13 @@ jobs:
           distribution: 'zulu'
           cache: 'gradle'
 
-      - name: Build EXE Package
-        # Task này của KorGE sẽ đóng gói ứng dụng kèm theo JRE thu nhỏ
-        run: ./gradlew packageJvmApp --no-daemon
+      - name: Build with Gradle
+        # Sử dụng task này để tạo ra bộ file thực thi đầy đủ
+        run: ./gradlew jvmInstallDist --no-daemon
 
-      - name: Upload EXE Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: game2048-windows-package
-          # Thư mục chứa file exe và các file phụ trợ
-          path: build/jpackage/
+          name: game2048-windows-dist
+          # Đường dẫn chuẩn sau khi build jvmInstallDist
+          path: build/install/game2048/
